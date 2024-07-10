@@ -1,17 +1,26 @@
-document.getElementById('generateKeyButton').addEventListener('click', function() {
-    fetch('api.php?action=generate-key', {
-        method: 'GET'
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.key) {
-            document.getElementById('keyDisplay').textContent = 'Your key is: ' + data.key;
-        } else {
-            document.getElementById('keyDisplay').textContent = 'Failed to generate key';
+document.addEventListener('DOMContentLoaded', function() {
+    const generateKeyButton = document.getElementById('generateKeyButton');
+    const keyDisplay = document.getElementById('keyDisplay');
+
+    generateKeyButton.addEventListener('click', generateKey);
+
+    function generateKey() {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let key = '';
+        for (let i = 0; i < 16; i++) {
+            key += characters.charAt(Math.floor(Math.random() * characters.length));
         }
-    })
-    .catch(error => {
-        console.error('Error generating key:', error);
-        document.getElementById('keyDisplay').textContent = 'Error generating key';
-    });
+
+        keyDisplay.textContent = 'Your key is: ' + key;
+
+        // Instead of saving to a server, we'll save to localStorage
+        saveKey(key);
+    }
+
+    function saveKey(key) {
+        let keys = JSON.parse(localStorage.getItem('keys') || '[]');
+        keys.push(key);
+        localStorage.setItem('keys', JSON.stringify(keys));
+        console.log('Key saved:', key);
+    }
 });
