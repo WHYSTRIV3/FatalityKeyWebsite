@@ -22,6 +22,28 @@ document.addEventListener('DOMContentLoaded', function() {
     async function saveKeyToGist(key) {
         const url = `https://api.github.com/gists/${GIST_ID}`;
         const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `token ${GITHUB_TOKEN}`,
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch Gist');
+        }
+
+        const gistData = await response.json();
+        let content = { keys: [] };
+        if (gistData.files['keys.json']) {
+            content = JSON.parse(gistData.files['keys.json'].content);
+        }
+
+        content.keys.push({
+            key: key,
+            timestamp: Date.now()
+        });
+
+        const updateResponse = await fetch(url, {
             method: 'PATCH',
             headers: {
                 'Authorization': `token ${GITHUB_TOKEN}`,
@@ -30,14 +52,14 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify({
                 files: {
                     'keys.json': {
-                        content: JSON.stringify({ key: key, timestamp: Date.now() })
+                        content: JSON.stringify(content)
                     }
                 }
             })
         });
 
-        if (!response.ok) {
-            throw new Error('Failed to save key');
+        if (!updateResponse.ok) {
+            throw new Error('Failed to update Gist');
         }
     }
 });
