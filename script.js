@@ -1,50 +1,43 @@
+const GITHUB_TOKEN = 'YOUR_GITHUB_PERSONAL_ACCESS_TOKEN';
+const GIST_ID = 'YOUR_GIST_ID'; // Create a gist and put its ID here
+
 document.addEventListener('DOMContentLoaded', function() {
     const generateKeyButton = document.getElementById('generateKeyButton');
     const keyDisplay = document.getElementById('keyDisplay');
-    const timerDisplay = document.getElementById('timerDisplay');
 
     generateKeyButton.addEventListener('click', generateKey);
 
-    function generateKey() {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let key = '';
-        for (let i = 0; i < 16; i++) {
-            key += characters.charAt(Math.floor(Math.random() * characters.length));
-        }
-
-        const expirationTime = Date.now() + 24 * 60 * 60 * 1000; // 24 hours from now
-
+    async function generateKey() {
+        const key = Math.random().toString(36).substring(2, 10);
         keyDisplay.textContent = 'Your key is: ' + key;
-        startTimer(expirationTime);
 
-        saveKey(key, expirationTime);
-    }
-
-    function saveKey(key, expirationTime) {
-        let keys = JSON.parse(localStorage.getItem('keys') || '[]');
-        keys.push({ key, expirationTime });
-        localStorage.setItem('keys', JSON.stringify(keys));
-        console.log('Key saved:', key);
-    }
-
-    function startTimer(expirationTime) {
-        function updateTimer() {
-            const now = Date.now();
-            const timeLeft = expirationTime - now;
-
-            if (timeLeft <= 0) {
-                timerDisplay.textContent = 'Key has expired';
-                return;
-            }
-
-            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
-            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-            timerDisplay.textContent = `Time left: ${hours}h ${minutes}m ${seconds}s`;
-            setTimeout(updateTimer, 1000);
+        try {
+            await saveKeyToGist(key);
+            console.log('Key saved successfully');
+        } catch (error) {
+            console.error('Error saving key:', error);
         }
+    }
 
-        updateTimer();
+    async function saveKeyToGist(key) {
+        const url = `https://api.github.com/gists/${GIST_ID}`;
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `token ${GITHUB_TOKEN}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                files: {
+                    'keys.json': {
+                        content: JSON.stringify({ key: key, timestamp: Date.now() })
+                    }
+                }
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to save key');
+        }
     }
 });
