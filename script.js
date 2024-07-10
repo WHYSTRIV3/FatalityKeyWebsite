@@ -1,5 +1,9 @@
-const GITHUB_TOKEN = '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'; // Replace with your new token, but don't share it publicly
-const GIST_URL = 'https://gist.githubusercontent.com/WHYSTRIV3/f341033477c474069eabd8ec540cf93e/raw/3c7cfba8454a27f0233d0a3548c0f8842d7e403a/keys.json';
+
+
+const GITHUB_TOKEN = 'f341033477c474069eabd8ec540cf93e/raw/3c7cfba8454a27f0233d0a3548c0f8842d7e403a'; // Replace with your GitHub Personal Access Token
+const GIST_ID = 'f341033477c474069eabd8ec540cf93e';
+
+const GIST_RAW_URL = `https://gist.githubusercontent.com/WHYSTRIV3/f341033477c474069eabd8ec540cf93e/raw/3c7cfba8454a27f0233d0a3548c0f8842d7e403a/keys.json`;
 
 document.addEventListener('DOMContentLoaded', function() {
     const generateKeyButton = document.getElementById('generateKeyButton');
@@ -12,8 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const key = Math.random().toString(36).substring(2, 10);
             keyDisplay.textContent = 'Generating key...';
 
-            const gistId = getGistIdFromUrl(GIST_URL);
-            await saveKeyToGist(key, gistId);
+            await saveKeyToGist(key);
             keyDisplay.textContent = 'Your key is: ' + key;
             console.log('Key saved successfully');
         } catch (error) {
@@ -22,20 +25,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function getGistIdFromUrl(url) {
-        const parts = url.split('/');
-        return parts[parts.length - 1];
-    }
-
-    async function saveKeyToGist(key, gistId) {
-        const url = `https://api.github.com/gists/${gistId}`;
+    async function saveKeyToGist(key) {
+        const url = `https://api.github.com/gists/${GIST_ID}`;
         console.log('Fetching Gist from URL:', url);
 
         const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Authorization': `token ${GITHUB_TOKEN}`,
-                'Accept': 'application/vnd.github.v3+json'
             }
         });
 
@@ -48,11 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let content = { keys: [] };
         if (gistData.files['keys.json']) {
-            try {
-                content = JSON.parse(gistData.files['keys.json'].content);
-            } catch (error) {
-                console.error('Error parsing JSON content:', error);
-            }
+            content = JSON.parse(gistData.files['keys.json'].content);
         }
 
         content.keys.push({
@@ -67,12 +60,11 @@ document.addEventListener('DOMContentLoaded', function() {
             headers: {
                 'Authorization': `token ${GITHUB_TOKEN}`,
                 'Content-Type': 'application/json',
-                'Accept': 'application/vnd.github.v3+json'
             },
             body: JSON.stringify({
                 files: {
                     'keys.json': {
-                        content: JSON.stringify(content, null, 2)
+                        content: JSON.stringify(content)
                     }
                 }
             })
