@@ -23,7 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function saveKeyToGist(key) {
         const url = `https://api.github.com/gists/${GIST_ID}`;
-        console.log('Fetching Gist...');
+        console.log('Fetching Gist from URL:', url);
+
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const gistData = await response.json();
         console.log('Gist data:', gistData);
+
         let content = { keys: [] };
         if (gistData.files['keys.json']) {
             content = JSON.parse(gistData.files['keys.json'].content);
@@ -47,7 +49,8 @@ document.addEventListener('DOMContentLoaded', function() {
             timestamp: Date.now()
         });
 
-        console.log('Updating Gist...');
+        console.log('Updating Gist with new key:', key);
+
         const updateResponse = await fetch(url, {
             method: 'PATCH',
             headers: {
