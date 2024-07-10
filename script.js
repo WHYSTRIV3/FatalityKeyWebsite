@@ -1,6 +1,3 @@
-const GITHUB_TOKEN = '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'; // Replace with your new token, but don't share it publicly
-const GIST_URL = 'https://gist.githubusercontent.com/WHYSTRIV3/f341033477c474069eabd8ec540cf93e/raw/03fd69a4519b08419029dcbd98a1578945499b85/keys.json';
-
 document.addEventListener('DOMContentLoaded', function() {
     const generateKeyButton = document.getElementById('generateKeyButton');
     const keyDisplay = document.getElementById('keyDisplay');
@@ -48,7 +45,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let content = { keys: [] };
         if (gistData.files['keys.json']) {
-            content = JSON.parse(gistData.files['keys.json'].content);
+            try {
+                content = JSON.parse(gistData.files['keys.json'].content);
+            } catch (error) {
+                console.error('Error parsing JSON content:', error);
+            }
         }
 
         content.keys.push({
