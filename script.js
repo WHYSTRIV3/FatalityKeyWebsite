@@ -1,5 +1,5 @@
-const GITHUB_TOKEN = 'YOUR_GITHUB_PERSONAL_ACCESS_TOKEN';
-const GIST_ID = 'YOUR_GIST_ID'; // Create a gist and put its ID here
+const GITHUB_TOKEN = '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';
+const GIST_ID = 'https://gist.github.com/WHYSTRIV3/f341033477c474069eabd8ec540cf93e'; // Create a gist and put its ID here
 
 document.addEventListener('DOMContentLoaded', function() {
     const generateKeyButton = document.getElementById('generateKeyButton');
