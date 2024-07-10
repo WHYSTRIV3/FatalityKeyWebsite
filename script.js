@@ -27,19 +27,23 @@ document.addEventListener('DOMContentLoaded', function() {
     async function saveKey(key, expirationTime) {
         try {
             const { data: fileData } = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-                owner: 'YOUR_GITHUB_USERNAME',
-                repo: 'YOUR_REPO_NAME',
+                owner: 'WHYSTRIV3',
+                repo: 'FatalityKeyWebsite',
                 path: 'keys.json'
             });
 
-            const content = JSON.parse(atob(fileData.content));
+            let content = { validKeys: [] };
+            if (fileData.content) {
+                content = JSON.parse(atob(fileData.content));
+            }
+
             content.validKeys.push({ key, expirationTime });
 
             const updatedContent = btoa(JSON.stringify(content, null, 2));
 
             await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
-                owner: 'YOUR_GITHUB_USERNAME',
-                repo: 'YOUR_REPO_NAME',
+                owner: 'WHYSTRIV3',
+                repo: 'FatalityKeyWebsite',
                 path: 'keys.json',
                 message: 'Add new key',
                 content: updatedContent,
