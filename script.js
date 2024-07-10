@@ -1,5 +1,5 @@
-const GITHUB_TOKEN = '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';
-const GIST_ID = 'https://gist.github.com/WHYSTRIV3/f341033477c474069eabd8ec540cf93e'; // Create a gist and put its ID here
+const GITHUB_TOKEN = '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'; // Replace with your new token, but don't share it publicly
+const GIST_ID = 'f341033477c474069eabd8ec540cf93e';
 
 document.addEventListener('DOMContentLoaded', function() {
     const generateKeyButton = document.getElementById('generateKeyButton');
@@ -9,13 +9,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function generateKey() {
         const key = Math.random().toString(36).substring(2, 10);
-        keyDisplay.textContent = 'Your key is: ' + key;
+        keyDisplay.textContent = 'Generating key...';
 
         try {
             await saveKeyToGist(key);
+            keyDisplay.textContent = 'Your key is: ' + key;
             console.log('Key saved successfully');
         } catch (error) {
             console.error('Error saving key:', error);
+            keyDisplay.textContent = 'Error generating key. Please try again.';
         }
     }
 
