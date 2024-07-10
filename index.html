@@ -4,55 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FatalityKeyWebsite</title>
+    <script src="https://cdn.skypack.dev/@octokit/core"></script>
     <style>
         body {
-            background-color: #000;
-            color: #fff;
             font-family: Arial, sans-serif;
-            text-align: center;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
             margin: 0;
+            background-color: #f0f0f0;
         }
-        .image-container {
-            margin-bottom: 20px;
-        }
-        .welcome-text {
-            font-size: 24px;
-            margin-bottom: 20px;
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         button {
-            padding: 15px 30px;
-            background-color: #007bff;
-            color: #fff;
+            background-color: #4CAF50;
             border: none;
-            border-radius: 5px;
-            font-size: 18px;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
             cursor: pointer;
-            margin-top: 20px;
-        }
-        button:hover {
-            background-color: #0056b3;
+            border-radius: 5px;
         }
         #keyDisplay, #timerDisplay {
-            font-size: 20px;
-            margin-top: 20px;
+            margin-top: 1rem;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
-    <div class="image-container">
-        <img src="path/to/your/logo.png" alt="Fatality Logo">
+    <div class="container">
+        <h1>Fatality Key Generator</h1>
+        <button id="generateKeyButton">Generate Key</button>
+        <div id="keyDisplay"></div>
+        <div id="timerDisplay"></div>
     </div>
-    <div class="welcome-text">Welcome To Fatality</div>
-    <button id="generateKeyButton">Generate Key</button>
-    <div id="keyDisplay"></div>
-    <div id="timerDisplay"></div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@octokit/core"></script>
     <script src="script.js"></script>
 </body>
 </html>
