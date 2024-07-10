@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify({
                 files: {
                     'keys.json': {
-                        content: JSON.stringify(content)
+                        content: JSON.stringify(content, null, 2) // Pretty-print the JSON content
                     }
                 }
             })
