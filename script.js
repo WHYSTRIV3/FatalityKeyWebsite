@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const timerDisplay = document.getElementById('timerDisplay');
 
     const octokit = new Octokit({
-        auth: 'YOUR_GITHUB_PERSONAL_ACCESS_TOKEN'
+        auth: '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'
     });
 
     generateKeyButton.addEventListener('click', generateKey);
