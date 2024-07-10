@@ -1,5 +1,5 @@
 const GITHUB_TOKEN = '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'; // Replace with your new token, but don't share it publicly
-const GIST_ID = 'f341033477c474069eabd8ec540cf93e';
+const GIST_URL = 'https://gist.githubusercontent.com/WHYSTRIV3/f341033477c474069eabd8ec540cf93e/raw/03fd69a4519b08419029dcbd98a1578945499b85/keys.json';
 
 document.addEventListener('DOMContentLoaded', function() {
     const generateKeyButton = document.getElementById('generateKeyButton');
@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const key = Math.random().toString(36).substring(2, 10);
             keyDisplay.textContent = 'Generating key...';
 
-            await saveKeyToGist(key);
+            const gistId = getGistIdFromUrl(GIST_URL);
+            await saveKeyToGist(key, gistId);
             keyDisplay.textContent = 'Your key is: ' + key;
             console.log('Key saved successfully');
         } catch (error) {
@@ -21,14 +22,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    async function saveKeyToGist(key) {
-        const url = `https://api.github.com/gists/${GIST_ID}`;
+    function getGistIdFromUrl(url) {
+        const parts = url.split('/');
+        return parts[parts.length - 1];
+    }
+
+    async function saveKeyToGist(key, gistId) {
+        const url = `https://api.github.com/gists/${gistId}`;
         console.log('Fetching Gist from URL:', url);
 
         const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Authorization': `token ${GITHUB_TOKEN}`,
+                'Accept': 'application/vnd.github.v3+json'
             }
         });
 
@@ -56,11 +63,12 @@ document.addEventListener('DOMContentLoaded', function() {
             headers: {
                 'Authorization': `token ${GITHUB_TOKEN}`,
                 'Content-Type': 'application/json',
+                'Accept': 'application/vnd.github.v3+json'
             },
             body: JSON.stringify({
                 files: {
                     'keys.json': {
-                        content: JSON.stringify(content, null, 2) // Pretty-print the JSON content
+                        content: JSON.stringify(content, null, 2)
                     }
                 }
             })
