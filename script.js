@@ -8,21 +8,22 @@ document.addEventListener('DOMContentLoaded', function() {
     generateKeyButton.addEventListener('click', generateKey);
 
     async function generateKey() {
-        const key = Math.random().toString(36).substring(2, 10);
-        keyDisplay.textContent = 'Generating key...';
-
         try {
+            const key = Math.random().toString(36).substring(2, 10);
+            keyDisplay.textContent = 'Generating key...';
+
             await saveKeyToGist(key);
             keyDisplay.textContent = 'Your key is: ' + key;
             console.log('Key saved successfully');
         } catch (error) {
-            console.error('Error saving key:', error);
-            keyDisplay.textContent = 'Error generating key. Please try again.';
+            console.error('Error generating or saving key:', error);
+            keyDisplay.textContent = 'Error: ' + error.message;
         }
     }
 
     async function saveKeyToGist(key) {
         const url = `https://api.github.com/gists/${GIST_ID}`;
+        console.log('Fetching Gist...');
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -31,10 +32,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to fetch Gist');
+            throw new Error(`Failed to fetch Gist: ${response.status} ${response.statusText}`);
         }
 
         const gistData = await response.json();
+        console.log('Gist data:', gistData);
         let content = { keys: [] };
         if (gistData.files['keys.json']) {
             content = JSON.parse(gistData.files['keys.json'].content);
@@ -45,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
             timestamp: Date.now()
         });
 
+        console.log('Updating Gist...');
         const updateResponse = await fetch(url, {
             method: 'PATCH',
             headers: {
@@ -61,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         if (!updateResponse.ok) {
-            throw new Error('Failed to update Gist');
+            throw new Error(`Failed to update Gist: ${updateResponse.status} ${updateResponse.statusText}`);
         }
     }
 });
