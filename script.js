@@ -1,7 +1,7 @@
 
 
-const GITHUB_TOKEN = 'f341033477c474069eabd8ec540cf93e/raw/3c7cfba8454a27f0233d0a3548c0f8842d7e403a'; // Replace with your GitHub Personal Access Token
-const GIST_ID = 'f341033477c474069eabd8ec540cf93e';
+const GITHUB_TOKEN = ''; // Replace with your GitHub Personal Access Token
+const GIST_ID = '';
 
 const GIST_RAW_URL = `https://gist.githubusercontent.com/WHYSTRIV3/f341033477c474069eabd8ec540cf93e/raw/3c7cfba8454a27f0233d0a3548c0f8842d7e403a/keys.json`;
 
