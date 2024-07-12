@@ -35,10 +35,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function saveKeyToDatabase(key) {
-        const newKeyRef = database.ref('keys').push();
-        newKeyRef.set({
+        const keysRef = database.ref('keys');
+        keysRef.push({
             key: key,
-            timestamp: Date.now()
+            timestamp: firebase.database.ServerValue.TIMESTAMP
         });
     }
 });
