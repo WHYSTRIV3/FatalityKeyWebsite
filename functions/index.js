@@ -9,7 +9,7 @@ app.use(cors());
 
 // Proxy endpoint
 app.get("/keys", (req, res) => {
-    const firebaseUrl = 'https://your-firebase-project-id.firebaseio.com/keys.json'; // Replace with your Firebase URL
+    const firebaseUrl = 'https://fatalitykey-default-rtdb.firebaseio.com/keys.json';
     request(firebaseUrl, (error, response, body) => {
         if (!error && response.statusCode === 200) {
             res.send(body);
