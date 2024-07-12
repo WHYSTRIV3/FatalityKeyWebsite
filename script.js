@@ -1,14 +1,3 @@
-// Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyAmXeTBDo8jE9BRlRNEr-dciNidWOaAm50",
-    authDomain: "fatalitykey.firebaseapp.com",
-    databaseURL: "https://fatalitykey-default-rtdb.firebaseio.com", // Add this line
-    projectId: "fatalitykey",
-    storageBucket: "fatalitykey.appspot.com",
-    messagingSenderId: "986288270355",
-    appId: "1:986288270355:web:3514ce300cf1511a7de3e6",
-    measurementId: "G-PD34LQNLNF"
-};
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
