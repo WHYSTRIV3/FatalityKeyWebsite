@@ -2,6 +2,7 @@
 const firebaseConfig = {
     apiKey: "AIzaSyAmXeTBDo8jE9BRlRNEr-dciNidWOaAm50",
     authDomain: "fatalitykey.firebaseapp.com",
+    databaseURL: "https://fatalitykey-default-rtdb.firebaseio.com", // Add this line
     projectId: "fatalitykey",
     storageBucket: "fatalitykey.appspot.com",
     messagingSenderId: "986288270355",
@@ -20,12 +21,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     generateKeyButton.addEventListener('click', generateKey);
 
-    function generateKey() {
+    async function generateKey() {
         try {
             const key = Math.random().toString(36).substring(2, 10);
             keyDisplay.textContent = 'Generating key...';
 
-            saveKeyToDatabase(key);
+            await saveKeyToDatabase(key);
             keyDisplay.textContent = 'Your key is: ' + key;
             console.log('Key saved successfully');
         } catch (error) {
@@ -34,9 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function saveKeyToDatabase(key) {
+    async function saveKeyToDatabase(key) {
         const keysRef = database.ref('keys');
-        keysRef.push({
+        await keysRef.push({
             key: key,
             timestamp: firebase.database.ServerValue.TIMESTAMP
         });
