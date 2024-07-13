@@ -4,23 +4,10 @@ const timerDisplay = document.getElementById('timerDisplay');
 
 let countdown;
 
-generateKeyButton.addEventListener('click', async () => {
-    keyDisplay.textContent = 'Generating key...';
-    try {
-        const response = await fetch('/api/generate-key', {
-            method: 'POST'
-        });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        const { key } = data;
-        keyDisplay.textContent = `Your key: ${key}`;
-        startTimer(300); // 5 minutes countdown
-    } catch (error) {
-        console.error('Error generating key:', error);
-        keyDisplay.textContent = `Error generating key: ${error.message}`;
-    }
+generateKeyButton.addEventListener('click', () => {
+    const dummyKey = 'DUMMY-' + Math.random().toString(36).substring(2, 15);
+    keyDisplay.textContent = `Your key: ${dummyKey}`;
+    startTimer(300); // 5 minutes countdown
 });
 
 function startTimer(duration) {
