@@ -2,8 +2,10 @@ const generateKeyButton = document.getElementById('generateKeyButton');
 const keyDisplay = document.getElementById('keyDisplay');
 
 generateKeyButton.addEventListener('click', async () => {
+    generateKeyButton.disabled = true;
+    keyDisplay.textContent = 'Generating key...';
     try {
-        const response = await fetch('/api/generate-key', {
+        const response = await fetch('https://fatality-key-website-whystriv3s-projects.vercel.app/api/generate-key', {
             method: 'POST'
         });
         if (!response.ok) {
@@ -14,5 +16,7 @@ generateKeyButton.addEventListener('click', async () => {
     } catch (error) {
         console.error('Error generating key:', error);
         keyDisplay.textContent = `Error: ${error.message}`;
+    } finally {
+        generateKeyButton.disabled = false;
     }
 });
