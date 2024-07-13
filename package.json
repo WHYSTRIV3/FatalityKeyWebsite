@@ -1,18 +1,13 @@
 {
-  "name": "fatalitykeywebsite",
+  "name": "fatality-key-generator",
   "version": "1.0.0",
   "description": "Key generator for Fatality",
   "main": "index.js",
   "scripts": {
     "start": "vercel dev",
-    "deploy": "vercel deploy --prod",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "vercel --prod"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "mongodb": "^6.8.0"
-  },
-  "devDependencies": {}
+  }
 }
