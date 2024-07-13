@@ -1,33 +1,25 @@
+document.getElementById('generateKeyButton').addEventListener('click', generateKey);
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
-
-document.addEventListener('DOMContentLoaded', function() {
-    const generateKeyButton = document.getElementById('generateKeyButton');
+async function generateKey() {
+    const response = await fetch('http://localhost:3000/generate-key', {
+        method: 'POST',
+    });
+    const data = await response.json();
     const keyDisplay = document.getElementById('keyDisplay');
-
-    generateKeyButton.addEventListener('click', generateKey);
-
-    async function generateKey() {
-        try {
-            const key = Math.random().toString(36).substring(2, 10);
-            keyDisplay.textContent = 'Generating key...';
-
-            await saveKeyToDatabase(key);
-            keyDisplay.textContent = 'Your key is: ' + key;
-            console.log('Key saved successfully');
-        } catch (error) {
-            console.error('Error generating or saving key:', error);
-            keyDisplay.textContent = 'Error: ' + error.message;
+    const timerDisplay = document.getElementById('timerDisplay');
+    
+    keyDisplay.innerText = `Generated Key: ${data.key}`;
+    
+    let timeLeft = 300; // 5 minutes
+    const countdown = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            timerDisplay.innerText = 'Key expired';
+        } else {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.innerText = `Time left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            timeLeft--;
         }
-    }
-
-    async function saveKeyToDatabase(key) {
-        const keysRef = database.ref('keys');
-        await keysRef.push({
-            key: key,
-            timestamp: firebase.database.ServerValue.TIMESTAMP
-        });
-    }
-});
+    }, 1000);
+}
