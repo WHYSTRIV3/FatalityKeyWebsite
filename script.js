@@ -6,7 +6,10 @@ generateKeyButton.addEventListener('click', async () => {
     keyDisplay.textContent = 'Generating key...';
     try {
         const response = await fetch('/api/generate-key', {
-            method: 'POST'
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
         });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
