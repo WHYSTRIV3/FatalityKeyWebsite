@@ -6,11 +6,8 @@ let countdown;
 
 generateKeyButton.addEventListener('click', async () => {
     try {
-        const response = await fetch('https://your-vercel-deployment-url.vercel.app/api/generate-key', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+        const response = await fetch('/api/generate-key', {
+            method: 'POST'
         });
         const data = await response.json();
         const { key } = data;
