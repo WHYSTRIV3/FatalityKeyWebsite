@@ -1,8 +1,7 @@
 {
-  "name": "fatality-key-generator",
+  "name": "fatality-key-website",
   "version": "1.0.0",
-  "description": "Key generator for Fatality",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "start": "vercel dev",
     "deploy": "vercel --prod"
