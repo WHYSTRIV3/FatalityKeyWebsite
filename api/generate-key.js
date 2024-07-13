@@ -1,9 +1,9 @@
-import { MongoClient } from 'mongodb';
+const { MongoClient } = require('mongodb');
 
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   console.log('API route hit:', req.method);
 
   if (req.method === 'OPTIONS') {
@@ -22,4 +22,4 @@ export default async function handler(req, res) {
   } else {
     res.status(405).json({ error: 'Method not allowed' });
   }
-}
+};
