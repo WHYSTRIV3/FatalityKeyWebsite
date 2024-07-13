@@ -9,15 +9,20 @@ generateKeyButton.addEventListener('click', async () => {
         const response = await fetch('/api/generate-key', {
             method: 'POST'
         });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
         const { key } = data;
         keyDisplay.textContent = `Your key: ${key}`;
         startTimer(300); // 5 minutes countdown
     } catch (error) {
         console.error('Error generating key:', error);
-        keyDisplay.textContent = 'Error generating key. Please try again.';
+        keyDisplay.textContent = `Error generating key: ${error.message}`;
     }
 });
+
+
 
 function startTimer(duration) {
     let timer = duration;
