@@ -1,26 +1,7 @@
 import { MongoClient } from 'mongodb';
 
-// Connection pooling setup
-let client;
-let clientPromise;
-
-if (!process.env.MONGODB_URI) {
-  throw new Error('Please add your Mongo URI to .env.local')
-}
-
-if (process.env.NODE_ENV === 'development') {
-  // In development mode, use a global variable so that the value
-  // is preserved across module reloads caused by HMR (Hot Module Replacement).
-  if (!global._mongoClientPromise) {
-    client = new MongoClient(process.env.MONGODB_URI);
-    global._mongoClientPromise = client.connect();
-  }
-  clientPromise = global._mongoClientPromise;
-} else {
-  // In production mode, it's best to not use a global variable.
-  client = new MongoClient(process.env.MONGODB_URI);
-  clientPromise = client.connect();
-}
+const uri = process.env.MONGODB_URI;
+const client = new MongoClient(uri);
 
 export default async function handler(req, res) {
   console.log('API route hit:', req.method);
@@ -38,20 +19,19 @@ export default async function handler(req, res) {
 
   if (req.method === 'POST') {
     try {
-      // Connect to the database
-      const db = (await clientPromise).db('your_database_name'); // Replace with your actual database name
+      await client.connect();
+      const database = client.db('fatality_keys');
+      const collection = database.collection('keys');
 
-      // Generate a key
       const key = Math.random().toString(36).substring(2, 15);
+      await collection.insertOne({ key, createdAt: new Date() });
 
-      // Store the key in the database (optional)
-      await db.collection('keys').insertOne({ key, createdAt: new Date() });
-
-      // Send the response
       res.status(200).json({ key: key });
     } catch (error) {
       console.error('Error generating key:', error);
       res.status(500).json({ error: 'Error generating key', details: error.message });
+    } finally {
+      await client.close();
     }
   } else {
     res.status(405).json({ error: 'Method not allowed' });
