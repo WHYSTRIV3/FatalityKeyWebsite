@@ -1,6 +1,6 @@
-const { MongoClient } = require('mongodb');
+import { MongoClient } from 'mongodb';
 
-// Initialize MongoDB client outside of the handler function
+// Connection pooling setup
 let client;
 let clientPromise;
 
@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === 'development') {
   clientPromise = client.connect();
 }
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   console.log('API route hit:', req.method);
 
   // Set CORS headers
@@ -38,12 +38,14 @@ module.exports = async (req, res) => {
 
   if (req.method === 'POST') {
     try {
+      // Connect to the database
+      const db = (await clientPromise).db('your_database_name'); // Replace with your actual database name
+
       // Generate a key
       const key = Math.random().toString(36).substring(2, 15);
 
-      // Connect to MongoDB (optional, remove if not needed)
-      const db = (await clientPromise).db('your_database_name');
-      // You can perform database operations here if needed
+      // Store the key in the database (optional)
+      await db.collection('keys').insertOne({ key, createdAt: new Date() });
 
       // Send the response
       res.status(200).json({ key: key });
@@ -54,4 +56,4 @@ module.exports = async (req, res) => {
   } else {
     res.status(405).json({ error: 'Method not allowed' });
   }
-};
+}
