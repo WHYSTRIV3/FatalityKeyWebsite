@@ -5,6 +5,7 @@ const timerDisplay = document.getElementById('timerDisplay');
 let countdown;
 
 generateKeyButton.addEventListener('click', async () => {
+    keyDisplay.textContent = 'Generating key...';
     try {
         const response = await fetch('/api/generate-key', {
             method: 'POST'
@@ -21,8 +22,6 @@ generateKeyButton.addEventListener('click', async () => {
         keyDisplay.textContent = `Error generating key: ${error.message}`;
     }
 });
-
-
 
 function startTimer(duration) {
     let timer = duration;
