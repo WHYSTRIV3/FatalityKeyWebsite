@@ -5,7 +5,7 @@ generateKeyButton.addEventListener('click', async () => {
     generateKeyButton.disabled = true;
     keyDisplay.textContent = 'Generating key...';
     try {
-        const response = await fetch('https://fatality-key-website-whystriv3s-projects.vercel.app/api/generate-key', {
+        const response = await fetch('/api/generate-key', {
             method: 'POST'
         });
         if (!response.ok) {
