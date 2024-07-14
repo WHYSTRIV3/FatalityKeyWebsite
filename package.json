@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
   },
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^6.0.12",
-    "dotenv": "^10.0.0"
+    "mongoose": "^8.5.1",
+    "dotenv": "^16.4.5"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
