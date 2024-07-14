@@ -2,12 +2,9 @@ import { MongoClient } from 'mongodb';
 
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
-console.log('API route hit:', req.method);
-console.log('Request headers:', req.headers);
-
 
 export default async function handler(req, res) {
-  console.log('API route hit:', req.method);
+  console.log('API route hit:', req.method); // Log request method
 
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -21,6 +18,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
+    console.log('Handling POST request'); // Log POST handling
     try {
       await client.connect();
       const database = client.db('fatality_keys');
